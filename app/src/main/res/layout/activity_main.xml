@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.167" />
 
     <TextView
-        android:id="@+id/txtRespuesta"
+        android:id="@+id/tvRespuesta"
         android:layout_width="167dp"
         android:layout_height="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
