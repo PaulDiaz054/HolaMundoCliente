@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnComunicar;
     TextView tvRespuesta;
     String respuesta = "";
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ConsumirWS() {
-        String url = "http://192.168.101.3:3000/mensaje";
+        String url = "http://192.168.137.98:3000/nombre";
         OkHttpClient cliente = new OkHttpClient();
         Request get = new Request.Builder()
                 .url(url)
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 MainActivity.this.runOnUiThread(() ->
-                        tvRespuesta.setText("Error al conectar con el servidor")
+                        tvRespuesta.setText("Error al conectar con el servidor: " + e.toString())
                 );
             }
 
@@ -67,10 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     if (!response.isSuccessful()) {
                         throw new IOException("Unexpected code " + response);
                     } else {
-                        respuesta = responseBody.string();
+                        String respuestaJson = responseBody.string();
+                        JSONArray lista = new JSONArray(respuestaJson);
+
                         MainActivity.this.runOnUiThread(() -> {
-                            tvRespuesta.setText(respuesta);
-                            Log.i("data", respuesta);
+                            tvRespuesta.setText(lista.toString());
                         });
                     }
                 } catch (Exception e) {
@@ -82,4 +85,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
